@@ -10,7 +10,7 @@ import Post from './models/post.Model.js';
  if(!CONNECTION_STRING){
     throw new Error("undefined connection string");
  } 
-    const sequelize:Sequelize= new Sequelize(CONNECTION_STRING);
+   export const sequelize:Sequelize= new Sequelize(CONNECTION_STRING);
  
  const connectDb= async():Promise<void> =>{
     try{
@@ -35,7 +35,6 @@ import Post from './models/post.Model.js';
 
  export const db= {
    Sequelize,
-   sequelize,
    User,
    Post,
  }

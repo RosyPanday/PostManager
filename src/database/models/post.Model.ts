@@ -1,5 +1,5 @@
 import  {DataTypes,Model} from 'sequelize';
-import { db } from '../connection.js';
+import { sequelize } from '../connection.js';
 import type {InferAttributes,InferCreationAttributes,CreationOptional, ForeignKey} from 'sequelize';
 import type User from './user.Model.js'; ///WHAT?
 
@@ -30,7 +30,7 @@ Post.init({
      }
 },
 {
-    sequelize:db.sequelize,
+    sequelize,
     modelName:'Post',
     tableName:'posts',
 

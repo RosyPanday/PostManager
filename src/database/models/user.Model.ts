@@ -1,6 +1,6 @@
 import  {DataTypes,Model} from 'sequelize';
 import type {InferAttributes,InferCreationAttributes,CreationOptional} from 'sequelize';
-import { db } from '../connection.js';
+import { sequelize } from '../connection.js';
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>
 {
@@ -30,7 +30,7 @@ User.init(
     //second argument
   
   {
-     sequelize:db.sequelize, //connection instance, keys cant be db.sequelize directly so its named sequelize
+     sequelize,
      modelName:'User',
      tableName:'users',
      timestamps:true,
