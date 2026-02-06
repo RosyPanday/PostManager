@@ -35,6 +35,7 @@ import Post from './models/post.Model.js';
 
  export const db= {
    Sequelize,
+   sequelize,
    User,
    Post,
  }

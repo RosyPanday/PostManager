@@ -1,11 +1,12 @@
 import  {DataTypes,Model} from 'sequelize';
 import type {InferAttributes,InferCreationAttributes,CreationOptional} from 'sequelize';
-import { sequelize } from '../connection.js';
+import { sequelize } from '../connection.js';  //sequelize is imported from connection, in which post and user models are imported(asynchronous and hoisting) which is causing circular dependency, left to fix
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>
 {
     declare id: CreationOptional<number>;
     declare uName: string;
+    declare uPassword:string;
     declare uContact:bigint;
 
 };
@@ -21,7 +22,11 @@ User.init(
     },
     uName:{
         type:DataTypes.STRING,
+        allowNull:false,
         
+    },uPassword:{
+        type:DataTypes.STRING,
+        allowNull:false,
     },
     uContact:{
         type:DataTypes.BIGINT,
