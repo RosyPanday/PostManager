@@ -1,10 +1,9 @@
 import bcrypt  from 'bcrypt';
-import { sequelize } from "../../database/connection.js";
-import { QueryTypes } from 'sequelize';
+// import { sequelize } from "../../database/connection.js";
+import { QueryTypes, Sequelize } from 'sequelize';
 import jwt from 'jsonwebtoken';
-import User from '../../database/models/user.Model.js';
-
-
+import db from "../../database/models/index.js"
+type dbType= typeof db;
 
 
 interface registerData {
@@ -17,7 +16,9 @@ interface UserPayload {
     uName: string;
 }
 
-export const handleUserRegistration=async (uName:string,uPassword:string,uContact:bigint) =>{
+export const handleUserRegistration=async (uName:string,uPassword:string,uContact:bigint , db:dbType) =>{
+
+    const {sequelize,Sequelize,User,Post} =db;
      //1. checking if data doesnt exist
     if(!uName || !uPassword || !uContact) {
          throw new Error("missing_credentials");
@@ -38,7 +39,7 @@ export const handleUserRegistration=async (uName:string,uPassword:string,uContac
         }
     );
     if(userExisting.length==0){ //checking length of array, !userExisting wont work cause an empty array is falsy
-        const newUser:User= await User.create({
+        const newUser= await User.create({
                 uName,
                 uPassword:uHashedPassword,
                 uContact,

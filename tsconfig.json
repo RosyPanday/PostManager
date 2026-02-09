@@ -9,6 +9,8 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
+    // "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
     // "types": [],   this would make ts forget the global process or fs modules even though @types/node is installed
     // For nodejs:
     // "lib": ["esnext"],

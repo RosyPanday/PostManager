@@ -1,16 +1,21 @@
 import  {DataTypes,Model} from 'sequelize';
-import { sequelize } from '../connection.js';
-import type {InferAttributes,InferCreationAttributes,CreationOptional, ForeignKey} from 'sequelize';
-import type User from './user.Model.js'; ///use type cause no function like hasMany,findAll etc for User is called here
+import type {InferAttributes,InferCreationAttributes,CreationOptional, ForeignKey, Sequelize} from 'sequelize';
 
 class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>>{ 
     declare id: CreationOptional<number>;
     declare pTitle: string;
     declare pBody:string;
-    declare userId: ForeignKey<User['id']>;
+    declare userId: ForeignKey<number>;
+
+    static associate(models: any) {
+         Post.belongsTo(models.User,{
+                foreignKey:'userId',
+         });
+    }
 };
 
- 
+export default (sequelize:Sequelize) =>{
+        
 Post.init({
      id:{
         type:DataTypes.INTEGER,
@@ -35,5 +40,5 @@ Post.init({
     tableName:'posts',
 
 })
-
-export default Post;
+  return Post;
+};
