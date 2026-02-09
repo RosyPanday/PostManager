@@ -7,12 +7,13 @@ import 'dotenv/config'; // this loads the variables first to reduce redundancy a
 const app=express();
 import {sequelize} from './database/connection.js';
 import { db } from './database/relation.js';  
+import { userRouter } from './routers/user.Route.js';
 
 const port= Number(process.env.PORT)|| 3000;// fallback 3000,if someone forgets to inject to .env
 
 // app.use(express.json());
 
-// app.use("/",someroute);
+app.use("/",userRouter);
 
 
 app.listen(port, ():void=>{
