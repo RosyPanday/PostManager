@@ -1,8 +1,11 @@
 
 import type { Request,Response } from "express";
-import  {db}  from "../database/connection.js";
-const User= db.User;
+import  {db}  from "../database/relation.js";
 import { QueryTypes } from "sequelize";
+import { sequelize } from "../database/connection.js";
+
+const User= db.User;
+
 
 interface registerData {
       uName: string,
@@ -16,12 +19,16 @@ const registerUser=async(req:Request, res:Response)=>{
         });
      }
        const data:registerData=req.body; 
-      const userExisting = await db.sequelize.query<registerData>(
+      const userExisting = await sequelize.query<registerData>(
         `SELECT * FROM users WHERE uName=:userName`,
         {
             replacements:{userName:req.body.uName},
             type:QueryTypes.SELECT
         }
     );
+
+    if(!userExisting){
+        
+    }
 
 }

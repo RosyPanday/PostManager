@@ -1,6 +1,6 @@
 import  {DataTypes,Model} from 'sequelize';
 import type {InferAttributes,InferCreationAttributes,CreationOptional} from 'sequelize';
-import { sequelize } from '../connection.js';  //sequelize is imported from connection, in which post and user models are imported(asynchronous and hoisting) which is causing circular dependency, left to fix
+import  { sequelize } from '../connection.js'; 
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>
 {

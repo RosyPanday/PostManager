@@ -1,7 +1,7 @@
 import  {DataTypes,Model} from 'sequelize';
 import { sequelize } from '../connection.js';
 import type {InferAttributes,InferCreationAttributes,CreationOptional, ForeignKey} from 'sequelize';
-import type User from './user.Model.js'; ///WHAT?
+import type User from './user.Model.js'; ///use type cause no function like hasMany,findAll etc for User is called here
 
 class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>>{ 
     declare id: CreationOptional<number>;

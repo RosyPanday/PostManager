@@ -6,7 +6,8 @@ import 'dotenv/config'; // this loads the variables first to reduce redundancy a
 //express is written in plain js , so this will be a problem
 
 const app=express();
-import { db } from './database/connection.js';  
+import {sequelize} from './database/connection.js';
+import { db } from './database/relation.js';  
 
 const port= Number(process.env.PORT)|| 3000;// fallback 3000,if someone forgets to inject to .env
 

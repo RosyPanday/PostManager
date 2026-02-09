@@ -1,8 +1,4 @@
 import {Sequelize} from 'sequelize';
-import User from './models/user.Model.js';
-
-import Post from './models/post.Model.js';
-
  const CONNECTION_STRING= process.env.CONNECTION_STRING;
 
 
@@ -24,18 +20,5 @@ import Post from './models/post.Model.js';
     }
  }
 
+ 
  connectDb();
-
- User.hasMany(Post,{
-   foreignKey:'userId'
- });
- Post.belongsTo(User,{
-   foreignKey:'userId'
- });
-
- export const db= {
-   Sequelize,
-   sequelize,
-   User,
-   Post,
- }
