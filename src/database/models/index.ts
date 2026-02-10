@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url);
 
 // Path to your config
 const env = process.env.NODE_ENV || 'development';
-const config = require('../config.js')[env];
+const config = require('../config.cjs')[env];
 
 // Import your model factories manually for 100% type safety
 import UserFactory from './user.Model.js';
