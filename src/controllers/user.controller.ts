@@ -2,22 +2,35 @@
 import type { Request, Response } from "express";
 import { handleUserRegistration } from "../services/userServices/handleUserRegistration.js";
 import db from "../database/models/index.js";
+import { adminEditHandler } from "../services/userServices/editUserByAdmin.js";
+import type { ICustomRequest } from "../middlewares/jwtVerification.middleware.js";
+import { userEditHandler } from "../services/userServices/editUserByUser.js";
 
 type dbType = typeof db;
 //defining interfaces to give data types
-interface userGivenData {
+export interface userGivenData {
    uName: string,
    uPassword: string,
    uContact: bigint,
-   db: dbType,
+
 }
+
+ interface IId{
+    id :number,
+  }
+
+const bodyEdit:Partial<userGivenData>={};
+ const body:Partial<userGivenData> = {};
 
 //register user API
 
 export const registerUser = async (req: Request<string, null, userGivenData, any>, res: Response): Promise<void> => {  //even tho this is returning json, it technically doesnt return anything to js engine, just a promise
-   console.log(req.body.uName);
+  
+   body.uName =req.body.uName;
+   body.uPassword =req.body.uPassword;
+   body.uContact =req.body.uContact;
+ 
 
-   const body = req.body;
 
    try {
       const token: string = await handleUserRegistration(body.uName, body.uPassword, body.uContact, db);
@@ -35,4 +48,73 @@ export const registerUser = async (req: Request<string, null, userGivenData, any
          })
       }
    }
+}
+
+
+
+
+//EDIT BY USER 
+let jwt_id:number;
+export const editUserByUser = async(req:Request,res:Response): Promise<void>=>{
+  try {
+let customReq:ICustomRequest=req as ICustomRequest;
+       //checking if its null or not an string, so type narrowing to object
+    if(customReq.user && typeof customReq.user!== "string") {
+          jwt_id=customReq.user.id;
+            
+     }
+     
+    bodyEdit.uName= req.body.uName;
+      bodyEdit.uPassword= req.body.uPassword;
+      bodyEdit.uContact=req.body.uContact;
+      editedUser=await userEditHandler(jwt_id,bodyEdit.uName,bodyEdit.uPassword,bodyEdit.uContact);
+
+      res.json({
+              "message":"congo on changing data,admin",
+              editedUser,
+      })
+      return;
+
+
+  } catch(err) {
+    if(err instanceof Error) {
+      res.json({
+         "errorMessage":err.message,
+          "errStack" :err.stack,
+      })
+    }
+  }
+}
+
+
+
+  //EDIT BY ADMIN
+
+  interface IReturnData{
+    "message":string,
+    editedUser:typeof db.Users,
+  }
+  let editedUser={};
+  export const editUsersByAdmin = async(req:Request<IId,IReturnData,userGivenData,any>,res:Response): Promise<void>=>{
+  try {
+      const userParameterId=req.params.id;
+      bodyEdit.uName= req.body.uName;
+      bodyEdit.uPassword= req.body.uPassword;
+      bodyEdit.uContact=req.body.uContact;
+      editedUser=await adminEditHandler(userParameterId,bodyEdit.uName,bodyEdit.uPassword,bodyEdit.uContact);
+
+      res.json({
+              "message":"congo on changing data,admin",
+              editedUser,
+      })
+      return;
+  } catch(err) {
+    if(err instanceof Error) {
+      res.json({
+         "errorMessage":err.message,
+          "errStack" :err.stack,
+      })
+    }
+  }
+
 }

@@ -16,14 +16,14 @@ interface registerData {
       uPassword:string,
       uContact:bigint,
 }
-interface UserPayload {
+export interface UserPayload {
     id: number;
     uName: string;
 }
 
-export const handleUserRegistration=async (uName:string,uPassword:string,uContact:bigint , db:dbType) =>{
-
+export const handleUserRegistration=async (uName:string,uPassword:string,uContact:bigint , db:dbType):Promise<string> =>{
     const {sequelize,Sequelize,Users,Posts} =db;
+      
      //1. checking if data doesnt exist
     if(!uName || !uPassword || !uContact) {
          throw new Error("missing_credentials");
