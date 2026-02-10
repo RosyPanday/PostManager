@@ -1,14 +1,14 @@
 import  {DataTypes,Model} from 'sequelize';
 import type {InferAttributes,InferCreationAttributes,CreationOptional, ForeignKey, Sequelize} from 'sequelize';
 
-class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>>{ 
+class Posts extends Model<InferAttributes<Posts>, InferCreationAttributes<Posts>>{ 
     declare id: CreationOptional<number>;
     declare pTitle: string;
     declare pBody:string;
     declare userId: ForeignKey<number>;
 
     static associate(models: any) {
-         Post.belongsTo(models.User,{
+         Posts.belongsTo(models.Users,{
                 foreignKey:'userId',
          });
     }
@@ -16,7 +16,7 @@ class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>>{
 
 export default (sequelize:Sequelize) =>{
         
-Post.init({
+Posts.init({
      id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -36,9 +36,9 @@ Post.init({
 },
 {
     sequelize,
-    modelName:'Post',
-    tableName:'posts',
+    modelName:'Posts',
+    tableName:'Posts',
 
 })
-  return Post;
+  return Posts;
 };

@@ -18,7 +18,7 @@ interface UserPayload {
 
 export const handleUserRegistration=async (uName:string,uPassword:string,uContact:bigint , db:dbType) =>{
 
-    const {sequelize,Sequelize,User,Post} =db;
+    const {sequelize,Sequelize,Users,Posts} =db;
      //1. checking if data doesnt exist
     if(!uName || !uPassword || !uContact) {
          throw new Error("missing_credentials");
@@ -32,14 +32,14 @@ export const handleUserRegistration=async (uName:string,uPassword:string,uContac
       const uHashedPassword:string= await  bcrypt.hash(uPassword,10);  //promise if rejected will be like throwing error automatically
 
       const userExisting = await sequelize.query<registerData>(  //it should return data in array of registerData format
-        `SELECT * FROM users WHERE uName=:userName`,
+        `SELECT * FROM "Users" WHERE "uName"=:uName`,
         {
-            replacements:{userName:uName},
+            replacements:{uName:uName},
             type:QueryTypes.SELECT
         }
     );
     if(userExisting.length==0){ //checking length of array, !userExisting wont work cause an empty array is falsy
-        const newUser= await User.create({
+        const newUser= await Users.create({
                 uName,
                 uPassword:uHashedPassword,
                 uContact,

@@ -10,7 +10,7 @@ import { userRouter } from './routers/user.Route.js';
 
 const port= Number(process.env.PORT)|| 3000;// fallback 3000,if someone forgets to inject to .env
 
-// app.use(express.json());
+app.use(express.json());
 
 app.use("/",userRouter);
 

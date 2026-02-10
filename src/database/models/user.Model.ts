@@ -2,20 +2,20 @@ import { DataTypes, Model, Sequelize } from 'sequelize';
 import type { InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 
 //  Defining the class outside the function so it can be used as a type
-class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+class Users extends Model<InferAttributes<Users>, InferCreationAttributes<Users>> {
     declare id: CreationOptional<number>;
     declare uName: string;
     declare uPassword: string;
     declare uContact: bigint;
 
     static associate(models: any) {
-         User.hasMany(models.Post, { foreignKey: 'userId' });
+         Users.hasMany(models.Posts, { foreignKey: 'userId' });
     }
 }
 
 // this function recieves sequelize connection instance as argument from index.ts
 export default (sequelize: Sequelize) => {
-    User.init(
+    Users.init(
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -37,11 +37,11 @@ export default (sequelize: Sequelize) => {
         },
         {
             sequelize, // comes from function argument
-            modelName: 'User',
-            tableName: 'users',
+            modelName: 'Users',
+            tableName: 'Users',
             timestamps: true,
         }
     );
 
-    return User;
+    return Users;
 };

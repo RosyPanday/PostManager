@@ -15,9 +15,9 @@ interface userGivenData{
 //register user API
 
 export const registerUser=async(req:Request, res:Response):Promise<void>=>{  //even tho this is returning json, it technically doesnt return anything to js engine, just a promise
-
+       console.log(req.body.uName);
+       
         const body = req.body as userGivenData;
-
 
           try{
              const token:string= await handleUserRegistration(body.uName, body.uPassword, body.uContact, db);
@@ -26,10 +26,12 @@ export const registerUser=async(req:Request, res:Response):Promise<void>=>{  //e
                      token
              })
           }
-           catch(err:any) {
-              if(err instanceof Error){
+           catch(error:any) {
+              if(error instanceof Error){
                 res.json({
-                    "errorMessage":err.message,
+                   "errorMessage": error.message,      
+                "errStack": error.stack,        
+
                 })
               }
           }

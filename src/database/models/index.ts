@@ -18,15 +18,15 @@ const sequelize = new Sequelize(config.url, config);
 interface database {
        sequelize:Sequelize,
        Sequelize: typeof Sequelize,
-       User: ReturnType<typeof UserFactory>,
-       Post:ReturnType<typeof PostFactory>, 
+       Users: ReturnType<typeof UserFactory>,
+       Posts:ReturnType<typeof PostFactory>, 
 }
 // Initialize models with type
 const db: database= {
   sequelize,
   Sequelize,
-  User: UserFactory(sequelize),
-  Post: PostFactory(sequelize),
+  Users: UserFactory(sequelize),
+  Posts: PostFactory(sequelize),
 };
 
 // Setup Associations
