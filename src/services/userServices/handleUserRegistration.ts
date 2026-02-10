@@ -1,10 +1,15 @@
-import bcrypt  from 'bcrypt';
+import bcrypt from 'bcrypt';
 // import { sequelize } from "../../database/connection.js";
-import { QueryTypes, Sequelize } from 'sequelize';
 import jwt from 'jsonwebtoken';
-import db from "../../database/models/index.js"
+import { QueryTypes } from 'sequelize';
+import db from "../../database/models/index.js";
 type dbType= typeof db;
-
+interface databaseData {
+    id:number,
+      uName: string,
+      uPassword:string,
+      uContact:bigint,
+}
 
 interface registerData {
       uName: string,
@@ -54,7 +59,7 @@ export const handleUserRegistration=async (uName:string,uPassword:string,uContac
        
        const jwtSecret:string= process.env.JWT_SECRET_KEY as string;
        if(!jwtSecret) {
-        throw new Error ("JWT_SECRET_MISSING");
+         throw new Error ("JWT_SECRET_MISSING");
        }
        
        const token:string =jwt.sign(
