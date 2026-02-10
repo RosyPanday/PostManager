@@ -5,6 +5,7 @@ import db from "../database/models/index.js";
 import { adminEditHandler } from "../services/userServices/editUserByAdmin.js";
 import type { ICustomRequest } from "../middlewares/jwtVerification.middleware.js";
 import { userEditHandler } from "../services/userServices/editUserByUser.js";
+import { viewUsersHandler } from "../services/viewUsers.js";
 
 type dbType = typeof db;
 //defining interfaces to give data types
@@ -15,21 +16,21 @@ export interface userGivenData {
 
 }
 
- interface IId{
-    id :number,
-  }
+interface IId {
+   id: number,
+}
 
-const bodyEdit:Partial<userGivenData>={};
- const body:Partial<userGivenData> = {};
+const bodyEdit: Partial<userGivenData> = {};
+const body: Partial<userGivenData> = {};
 
-//register user API
+//register user API (CREATE)
 
 export const registerUser = async (req: Request<string, null, userGivenData, any>, res: Response): Promise<void> => {  //even tho this is returning json, it technically doesnt return anything to js engine, just a promise
-  
-   body.uName =req.body.uName;
-   body.uPassword =req.body.uPassword;
-   body.uContact =req.body.uContact;
- 
+
+   body.uName = req.body.uName;
+   body.uPassword = req.body.uPassword;
+   body.uContact = req.body.uContact;
+
 
 
    try {
@@ -53,68 +54,97 @@ export const registerUser = async (req: Request<string, null, userGivenData, any
 
 
 
-//EDIT BY USER 
-let jwt_id:number;
-export const editUserByUser = async(req:Request,res:Response): Promise<void>=>{
-  try {
-let customReq:ICustomRequest=req as ICustomRequest;
-       //checking if its null or not an string, so type narrowing to object
-    if(customReq.user && typeof customReq.user!== "string") {
-          jwt_id=customReq.user.id;
-            
-     }
-     
-    bodyEdit.uName= req.body.uName;
-      bodyEdit.uPassword= req.body.uPassword;
-      bodyEdit.uContact=req.body.uContact;
-      editedUser=await userEditHandler(jwt_id,bodyEdit.uName,bodyEdit.uPassword,bodyEdit.uContact);
+//EDIT BY USER (UPDATE)
+let jwt_id: number;
+export const editUserByUser = async (req: Request, res: Response): Promise<void> => {
+   try {
+      let customReq: ICustomRequest = req as ICustomRequest;
+      //checking if its null or not an string, so type narrowing to object
+      if (customReq.user && typeof customReq.user !== "string") {
+         jwt_id = customReq.user.id;
+
+      }
+
+      bodyEdit.uName = req.body.uName;
+      bodyEdit.uPassword = req.body.uPassword;
+      bodyEdit.uContact = req.body.uContact;
+      editedUser = await userEditHandler(jwt_id, bodyEdit.uName, bodyEdit.uPassword, bodyEdit.uContact);
 
       res.json({
-              "message":"congo on changing data,admin",
-              editedUser,
+         "message": "congo on changing data,admin",
+         editedUser,
       })
       return;
 
 
-  } catch(err) {
-    if(err instanceof Error) {
-      res.json({
-         "errorMessage":err.message,
-          "errStack" :err.stack,
-      })
-    }
-  }
+   } catch (err) {
+      if (err instanceof Error) {
+         res.json({
+            "errorMessage": err.message,
+            "errStack": err.stack,
+         })
+      }
+   }
 }
 
 
 
-  //EDIT BY ADMIN
+//EDIT BY ADMIN (update)
 
-  interface IReturnData{
-    "message":string,
-    editedUser:typeof db.Users,
-  }
-  let editedUser={};
-  export const editUsersByAdmin = async(req:Request<IId,IReturnData,userGivenData,any>,res:Response): Promise<void>=>{
-  try {
-      const userParameterId=req.params.id;
-      bodyEdit.uName= req.body.uName;
-      bodyEdit.uPassword= req.body.uPassword;
-      bodyEdit.uContact=req.body.uContact;
-      editedUser=await adminEditHandler(userParameterId,bodyEdit.uName,bodyEdit.uPassword,bodyEdit.uContact);
+interface IReturnData {
+   "message": string,
+   editedUser: typeof db.Users,
+}
+let editedUser = {};
+export const editUsersByAdmin = async (req: Request<IId, IReturnData, userGivenData, any>, res: Response): Promise<void> => {
+   try {
+      const userParameterId = req.params.id;
+      bodyEdit.uName = req.body.uName;
+      bodyEdit.uPassword = req.body.uPassword;
+      bodyEdit.uContact = req.body.uContact;
+      editedUser = await adminEditHandler(userParameterId, bodyEdit.uName, bodyEdit.uPassword, bodyEdit.uContact);
 
       res.json({
-              "message":"congo on changing data,admin",
-              editedUser,
+         "message": "congo on changing data,admin",
+         editedUser,
       })
       return;
-  } catch(err) {
-    if(err instanceof Error) {
+   } catch (err) {
+      if (err instanceof Error) {
+         res.json({
+            "errorMessage": err.message,
+            "errStack": err.stack,
+         })
+      }
+   }
+
+}
+
+
+//View Users in our System (READ)
+let lastId;
+export const viewUsers = async (req: Request<number, IReturnData, userGivenData, any>, res: Response):Promise<void> => {
+   try {
+      lastId = req.query.lastId ? parseInt(req.query.lastId as string) : 0;
+
+      const data = await viewUsersHandler(lastId);
       res.json({
-         "errorMessage":err.message,
-          "errStack" :err.stack,
+         "message":"obtained data",
+         data,
+
       })
-    }
-  }
+   } catch (err) {
+      if (err instanceof Error) {
+         res.json({
+            "errormessage": err.message,
+         })
+      }
+
+   }
+}
+
+//delete user
+
+export const deleteUser = async()=>{
 
 }
