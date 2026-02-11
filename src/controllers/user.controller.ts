@@ -6,6 +6,7 @@ import { adminEditHandler } from "../services/userServices/editUserByAdmin.js";
 import type { ICustomRequest } from "../middlewares/jwtVerification.middleware.js";
 import { userEditHandler } from "../services/userServices/editUserByUser.js";
 import { viewUsersHandler } from "../services/viewUsers.js";
+import { deleteUserHandler } from "../services/userServices/deleteUserHandler.js";
 
 type dbType = typeof db;
 //defining interfaces to give data types
@@ -123,7 +124,7 @@ export const editUsersByAdmin = async (req: Request<IId, IReturnData, userGivenD
 
 //View Users in our System (READ)
 let lastId;
-export const viewUsers = async (req: Request<number, IReturnData, userGivenData, any>, res: Response):Promise<void> => {
+export const viewUsers = async (req: Request, res: Response):Promise<void> => {
    try {
       lastId = req.query.lastId ? parseInt(req.query.lastId as string) : 0;
 
@@ -145,6 +146,30 @@ export const viewUsers = async (req: Request<number, IReturnData, userGivenData,
 
 //delete user
 
-export const deleteUser = async()=>{
+export const deleteUser = async(req:Request,res:Response)=>{
+    let customReq: ICustomRequest = req as ICustomRequest;
+      //checking if its null or not an string, so type narrowing to object
+      if (customReq.user && typeof customReq.user !== "string") {
+         jwt_id = customReq.user.id;
 
+      }
+      try{
+       const rowsDeleted= await deleteUserHandler(jwt_id);
+           if(rowsDeleted!==0) {
+            res.json({
+               "message":"succcessfully deleted",
+            })
+           } else {
+            res.json({
+               "message":"failed to delete this user",
+            })
+           }
+      }catch(err) {
+         if(err instanceof Error) {
+            res.json({
+               "message": err.message,
+               "details":err.stack,
+            })
+         }
+      }
 }
