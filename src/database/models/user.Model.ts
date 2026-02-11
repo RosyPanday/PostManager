@@ -8,9 +8,7 @@ class Users extends Model<InferAttributes<Users>, InferCreationAttributes<Users>
     declare uPassword: string;
     declare uContact: bigint;
 
-    static associate(models: any) {
-         Users.hasMany(models.Posts, { foreignKey: 'userId' });
-    }
+  
 }
 
 // this function recieves sequelize connection instance as argument from index.ts

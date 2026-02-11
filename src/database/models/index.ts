@@ -8,25 +8,21 @@ const config = require('../config.cjs')[env];
 
 // Import your model factories manually for 100% type safety
 import UserFactory from './user.Model.js';
-import PostFactory from './post.Model.js';
 
 const sequelize = new Sequelize(config.url, config);
 
 // import type User from './user.Model.js';
-// import type Post from './post.Model.js';
 
 interface database {
        sequelize:Sequelize,
        Sequelize: typeof Sequelize,
        Users: ReturnType<typeof UserFactory>,
-       Posts:ReturnType<typeof PostFactory>, 
 }
 // Initialize models with type
 const db: database= {
   sequelize,
   Sequelize,
   Users: UserFactory(sequelize),
-  Posts: PostFactory(sequelize),
 };
 
 // Setup Associations
