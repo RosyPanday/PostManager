@@ -20,8 +20,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users', // Name of the target table
-          key: 'id'       // Key in the target table
+          model: 'Users', // Name of thetable in supabase
+          key: 'id'       // Key in the table in supabase
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

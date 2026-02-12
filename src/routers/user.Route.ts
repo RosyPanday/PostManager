@@ -3,6 +3,7 @@ import { deleteUser, editUserByUser, editUsersByAdmin, registerUser, viewUsers }
 import { verifyToken } from "../middlewares/jwtVerification.middleware.js";
 export const userRouter:Router = Router();
 
-userRouter.route('/').post(registerUser).get(viewUsers).delete(deleteUser);
-userRouter.route('/editAdmin').patch(editUsersByAdmin);
+userRouter.route('/').post(registerUser).get(viewUsers);
+userRouter.route('/editAdmin/:id').patch(editUsersByAdmin);
 userRouter.route('/editUser').patch(verifyToken,editUserByUser);
+userRouter.route('/deleteByUser').delete(verifyToken,deleteUser)

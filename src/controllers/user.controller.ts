@@ -100,6 +100,7 @@ let editedUser = {};
 export const editUsersByAdmin = async (req: Request<IId, IReturnData, userGivenData, any>, res: Response): Promise<void> => {
    try {
       const userParameterId = req.params.id;
+      console.log(req.body.uName);
       bodyEdit.uName = req.body.uName;
       bodyEdit.uPassword = req.body.uPassword;
       bodyEdit.uContact = req.body.uContact;
@@ -123,7 +124,7 @@ export const editUsersByAdmin = async (req: Request<IId, IReturnData, userGivenD
 
 
 //View Users in our System (READ)
-let lastId;
+let lastId:number;
 export const viewUsers = async (req: Request, res: Response):Promise<void> => {
    try {
       lastId = req.query.lastId ? parseInt(req.query.lastId as string) : 0;

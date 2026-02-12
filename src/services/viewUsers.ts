@@ -2,12 +2,12 @@ import { Op } from 'sequelize';
 import db from '../database/models/index.js';
 
 const Users = db.Users;
-const limit = 5;
+const limit :number= 5;
 
-interface ITypeUser {
+export interface ITypeUser {
     id: number; 
     uName: string;
-    uContact: bigint;
+    uContact: string;
 }
 
 export const viewUsersHandler = async (lastId:number):Promise<ITypeUser[]>=> {
@@ -25,7 +25,7 @@ export const viewUsersHandler = async (lastId:number):Promise<ITypeUser[]>=> {
         const retrievedUsers: ITypeUser[] = dbUsers.map((user: any) => ({
             id: user.id, 
             uName: user.uName,
-            uContact: BigInt(user.uContact)
+            uContact: user.uContact.toString()
         }));
 
        

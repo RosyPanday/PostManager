@@ -22,8 +22,9 @@ export const userEditHandler=async(jwt_id:number,uName:string|undefined,uPasswor
       }
        
       if(typeof uPassword==="string") {
-         updatePayloadByUser.uPassword=uPassword;
-         uHashedPassword= await  bcrypt.hash(updatePayloadByUser.uPassword,10); 
+         uHashedPassword= await  bcrypt.hash(uPassword,10); 
+         updatePayloadByUser.uPassword=uHashedPassword;
+
 
       }
        
